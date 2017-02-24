@@ -1,0 +1,46 @@
+<legend>评论管理</legend>
+<div class="row">
+    <form class="form-inline">
+        <div class="form-group col-md-3">
+            <label class="">评论者</label>
+            <input type="text" class="form-control" ng-model="comment.username_like">
+        </div>
+        <div class="form-group col-md-3">
+            <label class="">内容</label>
+            <input type="text" class="form-control" ng-model="comment.commentContent_like">
+        </div>
+        <div class="col-md-3">
+            <button class="btn btn-success btn-sm" ng-click="search()">查询</button>
+            <button class="btn btn-warning btn-sm" ng-click="reset()">重置</button>
+        </div>
+    </form>
+</div>
+<br/>
+<div class="table-responsive">
+    <table class="table table-bordered table-hover table-condensed">
+        <tr>
+            <th style="text-align: center;">序号</th>
+            <th style="text-align: center;">评论者</th>
+            <th style="text-align:center;">评论内容</th>
+            <th style="text-align: center;">发布时间</th>
+            <th style="text-align: center;">操作</th>
+        </tr>
+        <tr ng-repeat="comment in comments" align="center">
+            <td>{{$index +1}}</td>
+            <td>{{comment.username}}</td>
+            <td>{{comment.commentContent}}</td>
+            <td>{{comment.ctime}}</td>
+            <td>
+                <a class="btn btn-danger btn-sm" ng-click="delete(comment.commentId)">删 除</a></td>
+        </tr>
+        <tr>
+        	<td colspan="5">
+        		<div align="center">
+        			<a class="btn btn-default btn-sm" ng-click="changePage(-1)">上一页</a>
+        			{{currentPage}}/{{totalPageSize}}
+        			<a class="btn btn-default btn-sm" ng-click="changePage(1)">下一页</a>
+    			</div>
+        	</td>
+        </tr>
+    </table>
+</div>

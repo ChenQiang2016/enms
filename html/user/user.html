@@ -1,0 +1,189 @@
+    <legend>用户管理</legend>
+    <div class="row">
+        <form class="form-inline">
+            <div class="form-group col-sm-3">
+                <label class="">用户名</label>
+                <input type="text" class="form-control" ng-model="user.username_like">
+            </div>
+            <div class="col-sm-3">
+                <label class="">手机号</label>
+                <input type="text" class="form-control" ng-model="user.phone_like">
+            </div>
+            <div class="col-sm-3">
+               <button class="btn btn-success btn-sm" ng-click="search()">查询</button>
+                <button class="btn btn-warning btn-sm" ng-click="reset()">重置</button>
+            </div>
+            <div class="col-sm-3">
+            	<a class="btn btn-default btn-sm" ng-click="open()">添加用户</a>
+            </div>
+        </form>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover table-condensed">
+            <tr>
+                <th style="text-align: center;">序号</th>
+                <th style="text-align: center;">用户名</th>
+                <th style="text-align: center;">头像</th>
+                <th style="text-align: center;">密码</th>
+                <th style="text-align: center;">手机号</th>
+                <th style="text-align: center;">注册状态</th>
+                <th style="text-align: center;">注册时间</th>
+                <th style="text-align: center;">操作</th>
+            </tr>
+            <tr ng-repeat="user in users"  align="center">
+                <td>{{$index +1}}</td>
+                <td>{{user.username}}</td>
+                <td>
+                    <a ng-click="openInfo($index)">头像</a>
+                </td>
+                <td>{{user.password}}</td>
+                <td>{{user.phone}}</td>
+                <td>
+                    <span ng-if="user.userStatus == 1">正常</span>
+                    <span ng-if="user.userStatus == 0">拉黑</span>
+                </td>
+                <td>{{user.ctime}}</td>
+                <td><a class="btn btn-info btn-sm" ng-click="openEdit(user.userId)">编 辑</a> &nbsp;&nbsp; <a
+                        class="btn btn-danger btn-sm" ng-click="delete(user.userId)">删 除</a></td>
+            </tr>
+            <tr>
+            	<td colspan="8">
+            		<div align="center">
+            			<a class="btn btn-default btn-sm" ng-click="changePage(-1)">
+            			上一页</a>{{currentPage}}/{{totalPageSize}}
+            			<a class="btn btn-default btn-sm" ng-click="changePage(1)">下一页</a>
+       				 </div>
+            	</td>
+            </tr>
+        </table>
+        
+    </div>
+
+<div>
+    <script type="text/ng-template" id="myModalContent.html">
+        <div class="modal-header"><h3>添加用户</h3>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal">
+                <input type="hidden" ng-model="user.userId" class="form-control" placeholder="用户id">
+                <div class="form-group">
+                    <label for="username" class="col-sm-2 control-label">用户名</label>
+                    <div class="col-sm-8">
+                        <input type="text" ng-model="user.username" class="form-control" placeholder="用户名">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="col-sm-2 control-label">密码</label>
+                    <div class="col-sm-8">
+                        <input type="password" ng-model="user.password" class="form-control" placeholder="密码">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="userNO" class="col-sm-2 control-label">头像</label>
+                    <div class="col-sm-8">
+                        <button class="form-control btn btn-info " type="file"
+                                ngf-select="uploadFiles($file, $invalidFiles)"
+                                accept="image/*" ngf-max-size="100MB">
+                            {{'添加图片'}}
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-8">
+                        <img ng-if="user.headImage != null && user.headImage != ''" src="{{user.headImage}}" style="height: 200px;width: auto;">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="phone" class="col-sm-2 control-label">手机号码</label>
+                    <div class="col-sm-8">
+                        <input type="text" ng-model="user.phone" class="form-control" placeholder="手机号码">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="birthday" class="col-sm-2 control-label">注册状态</label>
+                    <div class="col-sm-8">
+                        <input type="radio" name="userStatus"  ng-model="user.userStatus" value="1" checked="true">正常 &nbsp;
+                        <input type="radio" name="userStatus" ng-model="user.userStatus" value="0">拉黑 &nbsp;
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary  btn-sm" ng-click="ok()">保存</button>
+            <button class="btn btn-warning  btn-sm" ng-click="cancel()">取消</button>
+        </div>
+    </script>
+</div>
+
+
+<div>
+    <script type="text/ng-template" id="editModalContent.html">
+        <div class="modal-header"><h3>编辑用户</h3>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal">
+                <input type="hidden" ng-model="user.userId" class="form-control" placeholder="用户id">
+                <div class="form-group">
+                    <label for="username" class="col-sm-2 control-label">用户名</label>
+                    <div class="col-sm-8">
+                        <input type="text" ng-model="user.username" class="form-control" placeholder="用户名">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="col-sm-2 control-label">密码</label>
+                    <div class="col-sm-8">
+                        <input type="password" ng-model="user.password" class="form-control" placeholder="密码">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="userNO" class="col-sm-2 control-label">头像</label>
+                    <div class="col-sm-8">
+                        <button class="form-control btn btn-info " type="file"
+                                ngf-select="uploadFiles($file, $invalidFiles)"
+                                accept="image/*" ngf-max-size="100MB">
+                            {{'添加图片'}}
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-8">
+                        <img ng-if="user.headImage != null" src="{{user.headImage}}" style="height: 200px;width: auto;">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="phone" class="col-sm-2 control-label">手机号码</label>
+                    <div class="col-sm-8">
+                        <input type="text" ng-model="user.phone" class="form-control" placeholder="手机号码">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="birthday" class="col-sm-2 control-label">注册状态</label>
+                    <div class="col-sm-8">
+                        <input type="radio" name="userStatus"  ng-model="user.userStatus" value="1" checked="true">正常 &nbsp;
+                        <input type="radio" name="userStatus" ng-model="user.userStatus" value="0">拉黑 &nbsp;
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary btn-sm" ng-click="ok()">保存</button>
+            <button class="btn btn-warning btn-sm" ng-click="cancel()">取消</button>
+        </div>
+    </script>
+</div>
+
+<div>
+    <script type="text/ng-template" id="infoModalContent.html">
+        <div>
+            <div class="modal-body">
+                <div >
+                    <img src="{{user.headImage}}" style="height: auto;width: 550px;">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning btn-sm" ng-click="cancel()">关闭</button>
+            </div>
+        </div>
+    </script>
+</div>

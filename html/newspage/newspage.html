@@ -1,0 +1,169 @@
+<legend>版面管理</legend>
+<div class="row">
+    <form class="form-inline">
+        <div class="form-group col-md-3">
+            <label class="">版面名称</label>
+            <input type="text" class="form-control" ng-model="newspage.title_like">
+        </div>
+        <div class="col-md-3">
+            <button class="btn btn-success btn-sm" ng-click="search()">查询</button>
+            <button class="btn btn-warning btn-sm" ng-click="reset()">重置</button>
+        </div>
+        <div class="col-md-3">
+        	<a class="btn btn-default btn-sm" ng-click="open()">发布新版面</a>
+        </div>
+    </form>
+</div>
+<br/>
+<div class="table-responsive">
+    <table class="table table-bordered table-hover table-condensed">
+        <tr>
+            <th style="text-align: center;">序号</th>
+            <th style="text-align: center;">版面名称</th>
+            <th style="text-align: center;">版面图片</th>
+            <th style="text-align: center;">版面状态</th>
+            <th style="text-align: center;">创建时间</th>
+            <th style="text-align: center;">操作</th>
+        </tr>
+        <tr ng-repeat="newspage in newspages" align="center">
+            <td>{{$index +1}}</td>
+            <td>{{newspage.title}}</td>
+            <td>
+                <a ng-click="openInfo($index)">封面</a>
+            </td>
+            <td>
+                <span ng-if="newspage.newsPageStatus == 1">正常</span>
+                <span ng-if="newspage.newsPageStatus == 0">未审核</span>
+            </td>
+            <td>{{newspage.ctime}}</td>
+            <td><a class="btn btn-info btn-sm" ng-click="openEdit(newspage.newsPageId)">编 辑</a> &nbsp;&nbsp;
+                <a class="btn btn-danger btn-sm" ng-click="delete(newspage.newsPageId,$index)">删 除</a></td>
+        </tr>
+        <tr>
+        	<td colspan="6">
+        		<div align="center">
+        			<a class="btn btn-default btn-sm" ng-click="changePage(-1)">上一页</a>
+       				{{currentPage}}/{{totalPageSize}}
+        			<a class="btn btn-default btn-sm" ng-click="changePage(1)">下一页</a>
+    			</div>
+        	</td>
+        </tr>
+    </table>
+</div>
+
+<div>
+    <script type="text/ng-template" id="myModalContent.html">
+        <div>
+            <div class="modal-header"><h3>发布版面</h3>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">版面封面</label>
+                        <div class="col-sm-8">
+                            <button class="form-control btn btn-info " type="file"
+                                    ngf-select="uploadFiles($file, $invalidFiles)"
+                                    accept="image/*" ngf-max-size="100MB">
+                                {{'添加图片'}}
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-8">
+                            <img ng-if="newspage.imageContent != null" src="{{newspage.imageContent}}"
+                                 style="height: 200px;width: auto;text-align: center;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">版面名称</label>
+                        <div class="col-sm-8">
+                            <input type="text" ng-model="newspage.title" class="form-control" placeholder="版面名称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">期刊名称</label>
+                        <div class="col-sm-8">
+                            <select ng-model="newspage.newsId" class="form-control">
+                                <option ng-repeat="news in newss" value="{{news.newsId}}">{{news.newsName}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">审核状态</label>
+                        <div class="col-sm-8">
+                            <input type="radio" name="userStatus" ng-model="newspage.newsPageStatus" value="1"
+                                   checked="checked">通过
+                            <input type="radio" name="userStatus" ng-model="newspage.newsPageStatus" value="0">未审核
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary btn-sm" ng-click="ok()">保存</button>
+                <button class="btn btn-warning btn-sm" ng-click="cancel()">取消</button>
+            </div>
+        </div>
+    </script>
+</div>
+
+<div>
+    <script type="text/ng-template" id="editContent.html">
+        <div>
+            <div class="modal-header"><h3>编辑版面</h3>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">版面封面</label>
+                        <div class="col-sm-8">
+                            <button class="form-control btn btn-info " type="file"
+                                    ngf-select="uploadFiles($file, $invalidFiles)"
+                                    accept="image/*" ngf-max-size="100MB">
+                                {{'添加图片'}}
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-8">
+                            <img ng-if="newspage.imageContent != null" src="{{newspage.imageContent}}"
+                                 style="height: 200px;width: auto;text-align: center;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">版面名称</label>
+                        <div class="col-sm-8">
+                            <input type="text"  ng-model="newspage.title" class="form-control" placeholder="版面名称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">审核状态</label>
+                        <div class="col-sm-8">
+                            <input type="radio" name="userStatus" ng-model="newspage.newsPageStatus" value="1"
+                                   checked="checked">通过
+                            <input type="radio" name="userStatus" ng-model="newspage.newsPageStatus" value="0">未审核
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary btn-sm" ng-click="ok()">保存</button>
+                <button class="btn btn-warning btn-sm" ng-click="cancel()">取消</button>
+            </div>
+        </div>
+    </script>
+</div>
+
+<div>
+    <script type="text/ng-template" id="infoModalContent.html">
+        <div>
+            <div class="modal-body">
+                <div >
+                    <img src="{{newspage.imageContent}}" alt="头像" style="height: auto;width: 550px;">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning btn-sm" ng-click="cancel()">关闭</button>
+            </div>
+        </div>
+    </script>
+</div>

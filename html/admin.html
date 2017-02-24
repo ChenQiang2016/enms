@@ -1,0 +1,42 @@
+<div id="container">
+    <div id="header">
+        <div>
+        <h2 align="center">电子报刊后台管理系统</h2>
+        </div>
+        <div style="text-align: right;margin-right: 50px;">
+            <!--<a href="javascript:;">退出登录</a>-->
+        </div>
+    </div>
+    <div id="mainContent">
+        <div id="sidebar">
+            <div>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <a href="#/admin/news">期刊管理</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="#/admin/newspage">版面管理</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="#/admin/article">文章管理</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="#/admin/comment">评论管理</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="#/admin/user">用户管理</a>
+                    </li>
+                   <!-- <li class="list-group-item">
+                        <a href="#/admin/manager">系统用户管理</a>
+                    </li>-->
+                </ul>
+                <hr style="height:60px;width:1px;"/>
+            </div>
+        </div>
+        <div id="content">
+            <div class="main" ui-view="" style="height: 70%;margin-left: 30px;">
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,24 @@
+<div>
+    <form style="margin: 200px auto;text-align: center;width: 250px;"  ng-controller="managerController" class>
+        <h1>ENMS后台登录</h1>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <input type="text" class="form-control" ng-model="manager.managerName" placeholder="用户名">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <input type="password" class="form-control" ng-model="manager.password" placeholder="密码">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <button class="btn btn-success btn-block" ng-click="login()">登 录</button>
+            </div>
+        </div>
+    </form>
+</div>

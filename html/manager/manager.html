@@ -1,0 +1,31 @@
+<legend>管理员管理</legend>
+<div class="table-responsive">
+    <a class="btn btn-default" ng-click="open()">添加</a>
+    <table class="table table-bordered table-hover">
+        <tr>
+            <th style="text-align: center;">序号</th>
+            <th style="text-align: center;">管理员姓名</th>
+            <th style="text-align: center;">密码</th>
+            <th style="text-align:center;">最后登录时间</th>
+            <th style="text-align: center;">创建时间</th>
+            <th style="text-align: center;">操作</th>
+        </tr>
+        <tr ng-repeat="article in articles" align="center">
+            <td>{{$index +1}}</td>
+            <td>{{article.title}}</td>
+            <td>{{article.author}}</td>
+            <td>
+                <a ng-click="openInfo($index)">详情</a>
+            </td>
+            <td>{{article.ctime}}</td>
+            <td><a class="btn btn-info" ng-click="openEdit(article.articleId)">编 辑</a> &nbsp;&nbsp;
+                <a class="btn btn-danger" ng-click="delete(article.articleId,$index)">删 除</a></td>
+        </tr>
+    </table>
+    <div align="center">
+        <a class="btn btn-default" ng-click="changePage(-1)">上一页</a>{{currentPage}}/{{totalPageSize}}<a
+            class="btn btn-default" ng-click="changePage(1)">下一页</a>
+    </div>
+</div>
+
+<img src="" alt="">
